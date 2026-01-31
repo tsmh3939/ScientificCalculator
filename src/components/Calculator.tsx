@@ -96,17 +96,18 @@ export function Calculator() {
       </div>
 
       <div
-        className={`flex items-center gap-2 p-3 rounded-lg min-h-11 ${
+        className={`flex items-center gap-3 p-4 rounded-xl min-h-14 ${
           error ? 'bg-bg-error' : 'bg-bg-result'
         }`}
       >
-        <span className="text-lg font-medium text-text-secondary">=</span>
+        <span className="text-xl font-medium text-text-secondary">=</span>
         <span
-          className={`font-mono break-all ${
+          className={`break-all tracking-wide ${
             error
-              ? 'text-error text-sm font-medium'
-              : 'text-xl font-semibold text-text-primary'
+              ? 'text-error text-base font-medium'
+              : 'text-xl font-bold text-text-primary tabular-nums'
           }`}
+          style={{ fontFamily: "'SF Mono', 'Fira Code', 'JetBrains Mono', Consolas, monospace" }}
         >
           {error || result || '0'}
         </span>
