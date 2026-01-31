@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import type { Settings as SettingsType, HistoryItem } from '../utils/storage';
+import { AVAILABLE_FUNCTIONS } from '../utils/functions';
 import './Settings.css';
 
 interface SettingsProps {
@@ -18,6 +20,8 @@ export function Settings({
   onSelectHistory,
   onBack,
 }: SettingsProps) {
+  const [isFunctionsOpen, setIsFunctionsOpen] = useState(false);
+
   return (
     <div className="settings">
       <header className="settings-header">
@@ -72,6 +76,46 @@ export function Settings({
               ))}
             </select>
           </div>
+        </section>
+
+        <section className="settings-section">
+          <button
+            className="section-title-button"
+            onClick={() => setIsFunctionsOpen(!isFunctionsOpen)}
+            aria-expanded={isFunctionsOpen}
+          >
+            <h2 className="section-title">利用可能な関数</h2>
+            <svg
+              className={`collapse-icon ${isFunctionsOpen ? 'open' : ''}`}
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </button>
+          {isFunctionsOpen && (
+            <div className="function-list">
+              {AVAILABLE_FUNCTIONS.map((category) => (
+                <div key={category.title} className="function-category">
+                  <h3 className="category-title">{category.title}</h3>
+                  <div className="function-items">
+                    {category.functions.map((func) => (
+                      <div key={func.name} className="function-item">
+                        <code className="function-name">{func.name}</code>
+                        <span className="function-description">{func.description}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </section>
 
         <section className="settings-section">
