@@ -109,7 +109,7 @@ export function Calculator() {
           }`}
           style={{ fontFamily: "'SF Mono', 'Fira Code', 'JetBrains Mono', Consolas, monospace" }}
         >
-          {error || result || '0'}
+          {error || result || ''}
         </span>
       </div>
     </div>
