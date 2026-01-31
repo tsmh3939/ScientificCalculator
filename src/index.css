@@ -1,3 +1,22 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-mono: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-input: var(--bg-input);
+  --color-bg-result: var(--bg-result);
+  --color-bg-hover: var(--bg-hover);
+  --color-bg-error: var(--bg-error);
+  --color-border: var(--border-color);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-placeholder: var(--text-placeholder);
+  --color-accent: var(--accent-color);
+  --color-accent-shadow: var(--accent-shadow);
+  --color-error: var(--error-color);
+}
+
 :root,
 [data-theme='light'] {
   --bg-primary: #ffffff;
@@ -12,7 +31,6 @@
   --accent-color: #4f46e5;
   --accent-shadow: rgba(79, 70, 229, 0.2);
   --error-color: #dc2626;
-  --error-bg: #fef2f2;
 }
 
 [data-theme='dark'] {
@@ -28,25 +46,4 @@
   --accent-color: #818cf8;
   --accent-shadow: rgba(129, 140, 248, 0.3);
   --error-color: #f87171;
-  --error-bg: #2d1f1f;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-    Ubuntu, Cantarell, sans-serif;
-  font-size: 14px;
-  line-height: 1.5;
-  background: var(--bg-primary);
-  color: var(--text-primary);
-}
-
-#root {
-  width: 100%;
 }

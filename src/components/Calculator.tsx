@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useCalculator } from '../hooks/useCalculator';
 import { Settings } from './Settings';
-import './Calculator.css';
 
 export function Calculator() {
   const {
@@ -36,7 +35,11 @@ export function Calculator() {
   };
 
   if (isLoading) {
-    return <div className="calculator loading">読み込み中...</div>;
+    return (
+      <div className="w-80 p-4 bg-bg-primary text-text-primary flex items-center justify-center h-50 text-text-secondary">
+        読み込み中...
+      </div>
+    );
   }
 
   if (showSettings) {
@@ -56,11 +59,11 @@ export function Calculator() {
   }
 
   return (
-    <div className="calculator">
-      <header className="header">
-        <h1 className="title">Calculator</h1>
+    <div className="w-80 p-4 bg-bg-primary text-text-primary">
+      <header className="flex items-center justify-between mb-4">
+        <h1 className="text-lg font-semibold m-0 text-text-primary">Calculator</h1>
         <button
-          className="settings-button"
+          className="flex items-center justify-center w-8 h-8 p-0 bg-transparent border-none rounded-md text-text-secondary cursor-pointer transition-colors duration-200 hover:bg-bg-hover hover:text-text-primary"
           onClick={() => setShowSettings(true)}
           aria-label="設定"
         >
@@ -80,11 +83,11 @@ export function Calculator() {
         </button>
       </header>
 
-      <div className="input-section">
+      <div className="mb-3">
         <input
           ref={inputRef}
           type="text"
-          className="expression-input"
+          className="w-full p-3 text-base font-mono bg-bg-input border border-border rounded-lg text-text-primary outline-none transition-all duration-200 box-border placeholder:text-text-placeholder focus:border-accent focus:shadow-[0_0_0_3px_var(--accent-shadow)]"
           value={expression}
           onChange={(e) => setExpression(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -93,9 +96,21 @@ export function Calculator() {
         />
       </div>
 
-      <div className={`result-section ${error ? 'error' : ''}`}>
-        <span className="equals">=</span>
-        <span className="result-value">{error || result || '0'}</span>
+      <div
+        className={`flex items-center gap-2 p-3 rounded-lg min-h-11 ${
+          error ? 'bg-bg-error' : 'bg-bg-result'
+        }`}
+      >
+        <span className="text-lg font-medium text-text-secondary">=</span>
+        <span
+          className={`font-mono break-all ${
+            error
+              ? 'text-error text-sm font-medium'
+              : 'text-xl font-semibold text-text-primary'
+          }`}
+        >
+          {error || result || '0'}
+        </span>
       </div>
     </div>
   );
