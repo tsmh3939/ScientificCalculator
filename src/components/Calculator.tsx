@@ -36,7 +36,7 @@ export function Calculator() {
 
   if (isLoading) {
     return (
-      <div className="w-80 p-4 bg-bg-primary text-text-primary flex items-center justify-center h-50 text-text-secondary">
+      <div className="w-80 p-4 bg-bg-primary text-text-primary flex items-center justify-center h-50">
         読み込み中...
       </div>
     );
