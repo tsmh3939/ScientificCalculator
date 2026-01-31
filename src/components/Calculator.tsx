@@ -91,7 +91,6 @@ export function Calculator() {
           value={expression}
           onChange={(e) => setExpression(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="例: 2^3 + sqrt(16)"
           spellCheck={false}
         />
       </div>
