@@ -92,6 +92,7 @@ export function Calculator() {
           onChange={(e) => setExpression(e.target.value)}
           onKeyDown={handleKeyDown}
           spellCheck={false}
+          autoFocus
         />
       </div>
 
