@@ -138,8 +138,7 @@ export function Calculator() {
 
   return (
     <div className="w-full max-w-md mx-auto p-4 bg-bg-primary text-text-primary">
-      <header className="flex items-center justify-between mb-4">
-        <h1 className="text-lg font-semibold m-0 text-text-primary">Calculator</h1>
+      <header className="flex items-center justify-end mb-4">
         <button
           className="flex items-center justify-center w-8 h-8 p-0 bg-transparent border-none rounded-md text-text-secondary cursor-pointer transition-colors duration-200 hover:bg-bg-hover hover:text-text-primary"
           onClick={() => setShowSettings(true)}
