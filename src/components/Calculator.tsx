@@ -138,9 +138,19 @@ export function Calculator() {
 
   return (
     <div className="w-full max-w-md mx-auto p-4 bg-bg-primary text-text-primary">
-      <header className="flex items-center justify-end mb-4">
+      <div className="mb-3 relative">
+        <input
+          ref={inputRef}
+          type="text"
+          className="w-full p-3 pr-10 text-base font-mono bg-bg-input border border-border rounded-lg text-text-primary outline-none transition-all duration-200 box-border placeholder:text-text-placeholder focus:border-accent focus:shadow-[0_0_0_3px_var(--accent-shadow)]"
+          value={expression}
+          onChange={(e) => setExpression(e.target.value)}
+          onKeyDown={handleKeyDown}
+          spellCheck={false}
+          autoFocus
+        />
         <button
-          className="flex items-center justify-center w-8 h-8 p-0 bg-transparent border-none rounded-md text-text-secondary cursor-pointer transition-colors duration-200 hover:bg-bg-hover hover:text-text-primary"
+          className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center justify-center w-7 h-7 p-0 bg-transparent border-none rounded-md text-text-secondary cursor-pointer transition-colors duration-200 hover:bg-bg-hover hover:text-text-primary"
           onClick={() => setShowSettings(true)}
           aria-label="設定"
         >
@@ -158,19 +168,6 @@ export function Calculator() {
             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
           </svg>
         </button>
-      </header>
-
-      <div className="mb-3">
-        <input
-          ref={inputRef}
-          type="text"
-          className="w-full p-3 text-base font-mono bg-bg-input border border-border rounded-lg text-text-primary outline-none transition-all duration-200 box-border placeholder:text-text-placeholder focus:border-accent focus:shadow-[0_0_0_3px_var(--accent-shadow)]"
-          value={expression}
-          onChange={(e) => setExpression(e.target.value)}
-          onKeyDown={handleKeyDown}
-          spellCheck={false}
-          autoFocus
-        />
         {expression && bracketStatus.balance !== 0 && (
           <div className="flex items-center gap-2 mt-1.5 px-1">
             <span className="text-xs text-text-secondary">
