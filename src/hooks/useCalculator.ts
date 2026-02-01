@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { evaluate } from '../utils/evaluate';
 import type { Settings, HistoryItem } from '../utils/storage';
 import {
@@ -11,8 +11,6 @@ import {
 
 export function useCalculator() {
   const [expression, setExpression] = useState('');
-  const [result, setResult] = useState('');
-  const [error, setError] = useState('');
   const [settings, setSettings] = useState<Settings>({
     precision: 10,
     historyEnabled: true
@@ -33,17 +31,13 @@ export function useCalculator() {
     init();
   }, []);
 
-  useEffect(() => {
-    if (!isLoading) {
-      const evalResult = evaluate(expression, settings.precision);
-      if (evalResult.success) {
-        setResult(evalResult.result || '');
-        setError('');
-      } else {
-        setResult('');
-        setError(evalResult.error || '');
-      }
+  const { result, error } = useMemo(() => {
+    if (isLoading) return { result: '', error: '' };
+    const evalResult = evaluate(expression, settings.precision);
+    if (evalResult.success) {
+      return { result: evalResult.result || '', error: '' };
     }
+    return { result: '', error: evalResult.error || '' };
   }, [expression, settings.precision, isLoading]);
 
   const addToHistory = useCallback(async () => {
