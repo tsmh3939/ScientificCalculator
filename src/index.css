@@ -31,8 +31,7 @@ body {
   --color-warning: var(--warning-color);
 }
 
-:root,
-[data-theme='dark'] {
+:root {
   --bg-primary: #1e1e1e;
   --bg-input: #2d2d2d;
   --bg-result: #252540;

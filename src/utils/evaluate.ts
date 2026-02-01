@@ -6,11 +6,9 @@ math.config({
   number: 'number',
 });
 
-export interface EvaluateResult {
-  success: boolean;
-  result?: string;
-  error?: string;
-}
+export type EvaluateResult =
+  | { success: true; result: string }
+  | { success: false };
 
 export function evaluate(expression: string, precision: number = 10): EvaluateResult {
   if (!expression.trim()) {
@@ -22,12 +20,12 @@ export function evaluate(expression: string, precision: number = 10): EvaluateRe
 
     // 関数が返された場合（関数名のみが入力された場合）は何も表示しない
     if (typeof result === 'function') {
-      return { success: false, error: 'エラー' };
+      return { success: false };
     }
 
     if (typeof result === 'number') {
       if (!isFinite(result) || isNaN(result)) {
-        return { success: false, error: 'エラー' };
+        return { success: false };
       }
 
       const rounded = Number(result.toFixed(precision));
@@ -37,6 +35,6 @@ export function evaluate(expression: string, precision: number = 10): EvaluateRe
 
     return { success: true, result: String(result) };
   } catch {
-    return { success: false, error: 'エラー' };
+    return { success: false };
   }
 }

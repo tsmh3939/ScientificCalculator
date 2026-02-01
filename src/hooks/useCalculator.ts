@@ -35,9 +35,9 @@ export function useCalculator() {
     if (isLoading) return { result: '', error: '' };
     const evalResult = evaluate(expression, settings.precision);
     if (evalResult.success) {
-      return { result: evalResult.result || '', error: '' };
+      return { result: evalResult.result, error: '' };
     }
-    return { result: '', error: evalResult.error || '' };
+    return { result: '', error: 'エラー' };
   }, [expression, settings.precision, isLoading]);
 
   const addToHistory = useCallback(async () => {
