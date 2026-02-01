@@ -52,23 +52,6 @@ export function Settings({
           </h2>
 
           <div className="flex items-center justify-between gap-3">
-            <label htmlFor="theme" className="text-sm text-text-primary">
-              テーマ
-            </label>
-            <select
-              id="theme"
-              className="px-2.5 py-1.5 text-sm bg-bg-input border border-border rounded-md text-text-primary cursor-pointer outline-none focus:border-accent"
-              value={settings.theme}
-              onChange={(e) =>
-                onUpdateSettings({ theme: e.target.value as 'light' | 'dark' })
-              }
-            >
-              <option value="light">ライト</option>
-              <option value="dark">ダーク</option>
-            </select>
-          </div>
-
-          <div className="flex items-center justify-between gap-3">
             <label htmlFor="precision" className="text-sm text-text-primary">
               計算精度（小数点以下桁数）
             </label>

@@ -15,8 +15,7 @@ export function useCalculator() {
   const [error, setError] = useState('');
   const [settings, setSettings] = useState<Settings>({
     precision: 10,
-    historyEnabled: true,
-    theme: 'light',
+    historyEnabled: true
   });
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);

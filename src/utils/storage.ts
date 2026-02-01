@@ -3,7 +3,6 @@
 export interface Settings {
   precision: number;
   historyEnabled: boolean;
-  theme: 'light' | 'dark';
 }
 
 export interface HistoryItem {
@@ -15,7 +14,6 @@ export interface HistoryItem {
 const DEFAULT_SETTINGS: Settings = {
   precision: 10,
   historyEnabled: true,
-  theme: 'light',
 };
 
 const SETTINGS_KEY = 'calculator_settings';

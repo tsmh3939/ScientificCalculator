@@ -59,10 +59,6 @@ export function Calculator() {
     inputRef.current?.focus();
   }, []);
 
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', settings.theme);
-  }, [settings.theme]);
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const input = e.currentTarget;
     const cursorPos = input.selectionStart ?? 0;
