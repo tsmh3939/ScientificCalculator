@@ -11,7 +11,7 @@ export interface HistoryItem {
   timestamp: number;
 }
 
-const DEFAULT_SETTINGS: Settings = {
+export const DEFAULT_SETTINGS: Settings = {
   precision: 10,
   historyEnabled: true,
 };
@@ -19,59 +19,53 @@ const DEFAULT_SETTINGS: Settings = {
 const SETTINGS_KEY = 'calculator_settings';
 const HISTORY_KEY = 'calculator_history';
 
-function isExtensionContext(): boolean {
-  return typeof chrome !== 'undefined' && chrome.storage !== undefined;
+const isExtension = typeof chrome !== 'undefined' && chrome.storage !== undefined;
+
+async function get<T>(key: string): Promise<T | null> {
+  if (isExtension) {
+    return new Promise((resolve) => {
+      chrome.storage.local.get(key, (result) => resolve((result[key] as T) ?? null));
+    });
+  }
+  const stored = localStorage.getItem(key);
+  return stored ? JSON.parse(stored) : null;
+}
+
+async function set(key: string, value: unknown): Promise<void> {
+  if (isExtension) {
+    return new Promise((resolve) => {
+      chrome.storage.local.set({ [key]: value }, resolve);
+    });
+  }
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+async function remove(key: string): Promise<void> {
+  if (isExtension) {
+    return new Promise((resolve) => {
+      chrome.storage.local.remove(key, resolve);
+    });
+  }
+  localStorage.removeItem(key);
 }
 
 export async function loadSettings(): Promise<Settings> {
-  if (isExtensionContext()) {
-    return new Promise((resolve) => {
-      chrome.storage.local.get(SETTINGS_KEY, (result: Record<string, unknown>) => {
-        const stored = result[SETTINGS_KEY] as Partial<Settings> | undefined;
-        resolve({ ...DEFAULT_SETTINGS, ...stored });
-      });
-    });
-  }
-  const stored = localStorage.getItem(SETTINGS_KEY);
-  return stored ? { ...DEFAULT_SETTINGS, ...JSON.parse(stored) } : DEFAULT_SETTINGS;
+  const stored = await get<Partial<Settings>>(SETTINGS_KEY);
+  return { ...DEFAULT_SETTINGS, ...stored };
 }
 
 export async function saveSettings(settings: Settings): Promise<void> {
-  if (isExtensionContext()) {
-    return new Promise((resolve) => {
-      chrome.storage.local.set({ [SETTINGS_KEY]: settings }, resolve);
-    });
-  }
-  localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+  await set(SETTINGS_KEY, settings);
 }
 
 export async function loadHistory(): Promise<HistoryItem[]> {
-  if (isExtensionContext()) {
-    return new Promise((resolve) => {
-      chrome.storage.local.get(HISTORY_KEY, (result: Record<string, unknown>) => {
-        const stored = result[HISTORY_KEY] as HistoryItem[] | undefined;
-        resolve(stored || []);
-      });
-    });
-  }
-  const stored = localStorage.getItem(HISTORY_KEY);
-  return stored ? JSON.parse(stored) : [];
+  return (await get<HistoryItem[]>(HISTORY_KEY)) ?? [];
 }
 
 export async function saveHistory(history: HistoryItem[]): Promise<void> {
-  if (isExtensionContext()) {
-    return new Promise((resolve) => {
-      chrome.storage.local.set({ [HISTORY_KEY]: history }, resolve);
-    });
-  }
-  localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+  await set(HISTORY_KEY, history);
 }
 
 export async function clearHistory(): Promise<void> {
-  if (isExtensionContext()) {
-    return new Promise((resolve) => {
-      chrome.storage.local.remove(HISTORY_KEY, resolve);
-    });
-  }
-  localStorage.removeItem(HISTORY_KEY);
+  await remove(HISTORY_KEY);
 }

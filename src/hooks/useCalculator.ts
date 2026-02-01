@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { evaluate } from '../utils/evaluate';
 import type { Settings, HistoryItem } from '../utils/storage';
 import {
+  DEFAULT_SETTINGS,
   loadSettings,
   saveSettings,
   loadHistory,
@@ -11,10 +12,7 @@ import {
 
 export function useCalculator() {
   const [expression, setExpression] = useState('');
-  const [settings, setSettings] = useState<Settings>({
-    precision: 10,
-    historyEnabled: true
-  });
+  const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 

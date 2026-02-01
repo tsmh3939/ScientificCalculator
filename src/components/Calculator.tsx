@@ -1,32 +1,15 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useCalculator } from '../hooks/useCalculator';
+import { useCopyToClipboard } from '../hooks/useCopyToClipboard';
 import { Settings } from './Settings';
 
-function useCopyToClipboard() {
-  const [copied, setCopied] = useState(false);
-
-  const copy = useCallback(async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
-      return true;
-    } catch {
-      return false;
-    }
-  }, []);
-
-  return { copied, copy };
-}
-
-function checkBracketBalance(expr: string): { open: number; close: number; balance: number } {
-  let open = 0;
-  let close = 0;
+function getBracketBalance(expr: string): number {
+  let balance = 0;
   for (const char of expr) {
-    if (char === '(') open++;
-    if (char === ')') close++;
+    if (char === '(') balance++;
+    if (char === ')') balance--;
   }
-  return { open, close, balance: open - close };
+  return balance;
 }
 
 export function Calculator() {
@@ -47,12 +30,10 @@ export function Calculator() {
   const [showSettings, setShowSettings] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const { copied, copy } = useCopyToClipboard();
-  const bracketStatus = checkBracketBalance(expression);
+  const bracketBalance = getBracketBalance(expression);
 
   const handleCopyResult = () => {
-    if (result && !error) {
-      copy(result);
-    }
+    if (result && !error) copy(result);
   };
 
   useEffect(() => {
@@ -61,50 +42,42 @@ export function Calculator() {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const input = e.currentTarget;
-    const cursorPos = input.selectionStart ?? 0;
+    const pos = input.selectionStart ?? 0;
 
     if (e.key === 'Enter' && result) {
       addToHistory();
+      return;
     }
     if (e.key === 'Escape') {
       setExpression('');
+      return;
     }
     if (e.ctrlKey && e.key === 'c' && result && !error && !window.getSelection()?.toString()) {
       e.preventDefault();
       copy(result);
+      return;
     }
 
     // 括弧の自動補完
     if (e.key === '(') {
       e.preventDefault();
-      const before = expression.slice(0, cursorPos);
-      const after = expression.slice(cursorPos);
-      setExpression(before + '()' + after);
-      // カーソルを括弧の間に配置
-      setTimeout(() => {
-        input.setSelectionRange(cursorPos + 1, cursorPos + 1);
-      }, 0);
+      setExpression(expression.slice(0, pos) + '()' + expression.slice(pos));
+      setTimeout(() => input.setSelectionRange(pos + 1, pos + 1), 0);
+      return;
     }
 
-    // 閉じ括弧をスキップ（既に閉じ括弧がある場合）
-    if (e.key === ')' && expression[cursorPos] === ')') {
+    // 閉じ括弧をスキップ
+    if (e.key === ')' && expression[pos] === ')') {
       e.preventDefault();
-      input.setSelectionRange(cursorPos + 1, cursorPos + 1);
+      input.setSelectionRange(pos + 1, pos + 1);
+      return;
     }
 
     // Backspaceで括弧ペアを削除
-    if (e.key === 'Backspace' && cursorPos > 0) {
-      const charBefore = expression[cursorPos - 1];
-      const charAfter = expression[cursorPos];
-      if (charBefore === '(' && charAfter === ')') {
-        e.preventDefault();
-        const before = expression.slice(0, cursorPos - 1);
-        const after = expression.slice(cursorPos + 1);
-        setExpression(before + after);
-        setTimeout(() => {
-          input.setSelectionRange(cursorPos - 1, cursorPos - 1);
-        }, 0);
-      }
+    if (e.key === 'Backspace' && expression[pos - 1] === '(' && expression[pos] === ')') {
+      e.preventDefault();
+      setExpression(expression.slice(0, pos - 1) + expression.slice(pos + 1));
+      setTimeout(() => input.setSelectionRange(pos - 1, pos - 1), 0);
     }
   };
 
@@ -150,58 +123,33 @@ export function Calculator() {
           onClick={() => setShowSettings(true)}
           aria-label="設定"
         >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="3" />
             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
           </svg>
         </button>
-        {expression && bracketStatus.balance !== 0 && (
+        {expression && bracketBalance !== 0 && (
           <div className="flex items-center gap-2 mt-1.5 px-1">
-            <span className="text-xs text-text-secondary">
-              {bracketStatus.balance > 0 ? (
-                <span className="text-warning flex items-center gap-1">
-                  <span className="font-mono">)</span> が {bracketStatus.balance} つ不足
-                </span>
-              ) : (
-                <span className="text-warning flex items-center gap-1">
-                  <span className="font-mono">(</span> が {Math.abs(bracketStatus.balance)} つ不足
-                </span>
-              )}
+            <span className="text-xs text-warning">
+              <span className="font-mono">{bracketBalance > 0 ? ')' : '('}</span> が {Math.abs(bracketBalance)} つ不足
             </span>
           </div>
         )}
       </div>
 
       <div
-        className={`flex items-center gap-3 p-4 rounded-xl min-h-14 relative ${
-          error ? 'bg-bg-error' : 'bg-bg-result'
-        } ${result && !error ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}`}
+        className={`flex items-center gap-3 p-4 rounded-xl min-h-14 relative ${error ? 'bg-bg-error' : 'bg-bg-result'} ${result && !error ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}`}
         onClick={handleCopyResult}
         title={result && !error ? 'クリックでコピー' : undefined}
         role={result && !error ? 'button' : undefined}
         tabIndex={result && !error ? 0 : undefined}
         onKeyDown={(e) => {
-          if ((e.key === 'Enter' || e.key === ' ') && result && !error) {
-            handleCopyResult();
-          }
+          if ((e.key === 'Enter' || e.key === ' ') && result && !error) handleCopyResult();
         }}
       >
         <span className="text-xl font-medium text-text-secondary">=</span>
         <span
-          className={`break-all tracking-wide ${
-            error
-              ? 'text-error text-base font-medium'
-              : 'text-xl font-bold text-text-primary tabular-nums'
-          }`}
+          className={`break-all tracking-wide ${error ? 'text-error text-base font-medium' : 'text-xl font-bold text-text-primary tabular-nums'}`}
           style={{ fontFamily: "'SF Mono', 'Fira Code', 'JetBrains Mono', Consolas, monospace" }}
         >
           {error || result || ''}
@@ -212,7 +160,6 @@ export function Calculator() {
           </span>
         )}
       </div>
-
     </div>
   );
 }
