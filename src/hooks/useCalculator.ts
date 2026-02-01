@@ -34,8 +34,8 @@ export function useCalculator() {
   const { result, error } = useMemo(() => {
     if (isLoading) return { result: '', error: '' };
     const evalResult = evaluate(expression, settings.precision);
-    if (evalResult.success) {
-      return { result: evalResult.result, error: '' };
+    if (evalResult !== null) {
+      return { result: evalResult, error: '' };
     }
     return { result: '', error: 'エラー' };
   }, [expression, settings.precision, isLoading]);
