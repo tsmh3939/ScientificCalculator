@@ -15,6 +15,7 @@
   --color-accent: var(--accent-color);
   --color-accent-shadow: var(--accent-shadow);
   --color-error: var(--error-color);
+  --color-warning: var(--warning-color);
 }
 
 :root,
@@ -31,6 +32,7 @@
   --accent-color: #4f46e5;
   --accent-shadow: rgba(79, 70, 229, 0.2);
   --error-color: #dc2626;
+  --warning-color: #d97706;
 }
 
 [data-theme='dark'] {
@@ -46,4 +48,5 @@
   --accent-color: #818cf8;
   --accent-shadow: rgba(129, 140, 248, 0.3);
   --error-color: #f87171;
+  --warning-color: #fbbf24;
 }
