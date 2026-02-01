@@ -22,7 +22,7 @@ export function Settings({
   const [isFunctionsOpen, setIsFunctionsOpen] = useState(false);
 
   return (
-    <div className="w-80 p-4 bg-bg-primary text-text-primary">
+    <div className="w-full max-w-md mx-auto p-4 bg-bg-primary text-text-primary">
       <header className="flex items-center gap-3 mb-5">
         <button
           className="flex items-center justify-center w-8 h-8 p-0 bg-transparent border-none rounded-md text-text-secondary cursor-pointer transition-colors duration-200 hover:bg-bg-hover hover:text-text-primary"

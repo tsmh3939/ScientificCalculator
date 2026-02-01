@@ -114,7 +114,7 @@ export function Calculator() {
 
   if (isLoading) {
     return (
-      <div className="w-80 p-4 bg-bg-primary text-text-primary flex items-center justify-center h-50">
+      <div className="w-full max-w-md mx-auto p-4 bg-bg-primary text-text-primary flex items-center justify-center min-h-50">
         読み込み中...
       </div>
     );
@@ -137,7 +137,7 @@ export function Calculator() {
   }
 
   return (
-    <div className="w-80 p-4 bg-bg-primary text-text-primary">
+    <div className="w-full max-w-md mx-auto p-4 bg-bg-primary text-text-primary">
       <header className="flex items-center justify-between mb-4">
         <h1 className="text-lg font-semibold m-0 text-text-primary">Calculator</h1>
         <button
