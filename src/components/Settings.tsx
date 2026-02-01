@@ -144,6 +144,27 @@ export function Settings({
 
         <section className="flex flex-col gap-3">
           <h2 className="text-sm font-semibold text-text-secondary m-0 pb-2 border-b border-border">
+            ショートカットキー
+          </h2>
+          <div className="flex flex-col gap-1.5">
+            {[
+              { key: 'Enter', description: '履歴に追加' },
+              { key: 'Esc', description: 'クリア' },
+              { key: 'Ctrl+C', description: '結果をコピー' },
+            ].map((shortcut) => (
+              <div
+                key={shortcut.key}
+                className="flex items-center justify-between px-2.5 py-1.5 bg-bg-input border border-border rounded-md"
+              >
+                <kbd className="text-[13px] font-mono text-text-primary">{shortcut.key}</kbd>
+                <span className="text-xs text-text-secondary">{shortcut.description}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="flex flex-col gap-3">
+          <h2 className="text-sm font-semibold text-text-secondary m-0 pb-2 border-b border-border">
             履歴
           </h2>
 
