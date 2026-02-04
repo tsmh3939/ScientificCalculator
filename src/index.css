@@ -1,5 +1,7 @@
 @import 'tailwindcss';
-@plugin 'daisyui';
+@plugin 'daisyui' {
+  themes: all;
+}
 
 html,
 body,
@@ -10,40 +12,6 @@ body,
   padding: 0;
 }
 
-body {
-  background-color: var(--bg-primary);
-}
-
 @theme {
   --font-mono: 'SF Mono', Monaco, 'Cascadia Code', monospace;
-
-  --color-bg-primary: var(--bg-primary);
-  --color-bg-input: var(--bg-input);
-  --color-bg-result: var(--bg-result);
-  --color-bg-hover: var(--bg-hover);
-  --color-bg-error: var(--bg-error);
-  --color-border: var(--border-color);
-  --color-text-primary: var(--text-primary);
-  --color-text-secondary: var(--text-secondary);
-  --color-text-placeholder: var(--text-placeholder);
-  --color-accent: var(--accent-color);
-  --color-accent-shadow: var(--accent-shadow);
-  --color-error: var(--error-color);
-  --color-warning: var(--warning-color);
-}
-
-:root {
-  --bg-primary: #1e1e1e;
-  --bg-input: #2d2d2d;
-  --bg-result: #252540;
-  --bg-hover: #3d3d3d;
-  --bg-error: #2d1f1f;
-  --border-color: #404040;
-  --text-primary: #ffffff;
-  --text-secondary: #a0a0a0;
-  --text-placeholder: #707070;
-  --accent-color: #818cf8;
-  --accent-shadow: rgba(129, 140, 248, 0.3);
-  --error-color: #f87171;
-  --warning-color: #fbbf24;
 }

@@ -24,10 +24,17 @@ export function useCalculator() {
       ]);
       setSettings(loadedSettings);
       setHistory(loadedHistory);
+      document.documentElement.setAttribute('data-theme', loadedSettings.theme);
       setIsLoading(false);
     }
     init();
   }, []);
+
+  useEffect(() => {
+    if (!isLoading) {
+      document.documentElement.setAttribute('data-theme', settings.theme);
+    }
+  }, [settings.theme, isLoading]);
 
   const { result, error } = useMemo(() => {
     if (isLoading) return { result: '', error: '' };
